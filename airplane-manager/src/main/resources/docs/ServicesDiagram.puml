@@ -1,0 +1,22 @@
+@startuml
+
+class AirplaneLandService {
+    + landSolicitation (IAirplaneVerifications, AirTrafficControl);
+}
+
+class AirplaneTakeOffService {
+    + takeOffSolicitation (IAirplaneVerifications, AirTrafficControl);
+}
+
+interface IAirplaneVerifications {
+    boolean verifyEngine();
+    boolean verifyFlaps();
+    boolean verifyFuel();
+    boolean checkRunwayClearance();
+}
+
+AirplaneLandService -- IAirplaneVerifications
+AirplaneTakeOffService -- IAirplaneVerifications
+
+
+@enduml

@@ -1,0 +1,58 @@
+@startuml
+'Gereciar liberação de avioes
+'
+
+
+
+ class Airplane {
+    - model : String;
+    - nome;
+    - dataFabricacao;
+    - tipoAviao;
+    ...
+ }
+
+ class AirTrafficControl {
+     - inTrafficAirPlane : List<Flight>;
+     - toTakeOffAirplane : List<Flight>;
+     - toLandAirPlane : List<Flight>;
+     - managedAirplanes : List<AirplaneType>
+ }
+
+ class Flight {
+    - airPlane : Airplane;
+    - pilot : Pilot;
+ }
+
+ class Pilot {
+    - name : String;
+    - bornDate : LocalDate;
+    - licenseType : LicenseType;
+ }
+
+
+ enum LicenseType {
+    A,
+    B,
+    C
+ }
+
+ enum AirplaneType {
+    PASSAGEIRO,
+    CARGA,
+    CACA,
+    JATO
+    ...
+ }
+
+ Flight -- Airplane
+ Flight -- Pilot
+
+ AirTrafficControl -- Flight
+
+ Pilot -- LicenseType
+ Airplane -- AirplaneType
+
+
+
+@enduml
