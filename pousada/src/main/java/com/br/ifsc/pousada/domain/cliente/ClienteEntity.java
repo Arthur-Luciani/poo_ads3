@@ -1,19 +1,15 @@
 package com.br.ifsc.pousada.domain.cliente;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.UUID;
 
 @Entity(name = "cliente")
 @Getter
 @Setter
-@ToString
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cpf"}))
 public class ClienteEntity {
 
     @Id
@@ -21,4 +17,13 @@ public class ClienteEntity {
     private UUID id;
     private String nome;
     private String cpf;
+
+    @Override
+    public String toString() {
+        return "\"============ DADOS CLIENTE =============\n" + //
+                "ID: " + id.toString() + "\n" + //
+                "Nome: " + nome + "\n" + //
+                "CPF: " + cpf + "\n" + //
+                "========================================";
+    }
 }

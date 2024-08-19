@@ -13,38 +13,43 @@ public class ClienteController extends AbstractController {
     @Autowired
     private ClienteService clienteService;
 
-    @Autowired
-    private Scanner scanner;
-
     public void createCliente() {
         System.out.println("========== CRIAÇÃO DE CLIENTE ==========");
         var cliente = new ClienteEntity();
         System.out.println("Nome: ");
-        cliente.setNome(scanner.nextLine());
+        cliente.setNome(readString());
         System.out.println("CPF: ");
-        cliente.setCpf(scanner.nextLine());
-        super.executeWithExceptionHandler(() -> System.out.println(clienteService.create(cliente).toString()));
+        cliente.setCpf(readString());
+        var savedCliente = super.executeWithExceptionHandler(() -> clienteService.create(cliente));
+        System.out.println(savedCliente.toString());
         System.out.println("========================================");
     }
 
     public void updateCliente() {
-        System.out.println("========== ATUALIZAÇÃO DE CLIENTE ==========");
-        System.out.println("Informe o CPF");
-        var cliente = super.executeWithExceptionHandler(() -> clienteService.findByCpf(scanner.nextLine()));
-        System.out.println(cliente.toString());
-        System.out.println("Nome: ");
-        cliente.setNome(scanner.nextLine());
-        System.out.println("CPF: ");
-        cliente.setCpf(scanner.nextLine());
-        super.executeWithExceptionHandler(() -> clienteService.update(cliente));
-        System.out.println("========================================");
+        System.out.println("======== ATUALIZAÇÃO DE CLIENTE ========");
+        System.out.println("Informe o CPF: ");
+        try {
+            var cliente = clienteService.findByCpf(readString());
+            System.out.println(cliente.toString());
+            System.out.println("Nome: ");
+            cliente.setNome(readString());
+            System.out.println("CPF: ");
+            cliente.setCpf(readString());
+            var updatedCliente = super.executeWithExceptionHandler(() -> clienteService.update(cliente));
+            System.out.println(updatedCliente.toString());
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
+        } finally {
+            System.out.println("========================================");
+        }
     }
 
     public void deleteCliente() {
-        System.out.println("Deletar Cliente");
-
-        super.executeWithExceptionHandler(() -> clienteService.delete("001"));
+        System.out.println("=========== DELETAR CLIENTE ============");
+        System.out.println("Informe o CPF: ");
+        var cpf = readString();
+        super.executeWithExceptionHandler(() -> clienteService.delete(cpf));
+        System.out.println("========================================");
     }
-
 
 }

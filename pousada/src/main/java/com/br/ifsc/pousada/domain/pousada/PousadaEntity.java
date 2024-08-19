@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity (name = "pousada")
 @Getter
 @Setter
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"nome"}))
 public class PousadaEntity {
 
     @Id
@@ -18,5 +19,13 @@ public class PousadaEntity {
     private UUID id;
     private String nome;
     @OneToMany
-    private List<QuartoEntity> quartos;
+    private Set<QuartoEntity> quartos;
+
+    @Override
+    public String toString() {
+        return "\"============ DADOS POUSADA =============\n" + //
+                "ID: " + id.toString() + "\n" + //
+                "Nome: " + nome + "\n" + //
+                "========================================";
+    }
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Entity (name = "quarto")
+@Entity(name = "quarto")
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"numero"}))
 @Getter
 @Setter
@@ -23,4 +23,14 @@ public class QuartoEntity {
     @JoinColumn(name = "pousada_id")
     private PousadaEntity pousada;
     private Float valorDiaria;
+
+    @Override
+    public String toString() {
+        return "\"============ DADOS QUARTO ============\n" + //
+                "ID: " + id.toString() + "\n" + //
+                "Nome: " + numero + "\n" + //
+                "CPF: " + tipoQuarto.toString() + "\n" + //
+                "Valor diária: R$" + valorDiaria + "\n" + //
+                "========================================";
+    }
 }

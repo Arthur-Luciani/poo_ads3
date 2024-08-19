@@ -24,4 +24,6 @@ interface QuartoRepository extends JpaRepository<QuartoEntity, UUID> {
 
     Optional<QuartoEntity> findByNumero(String numero);
 
+
+
 }

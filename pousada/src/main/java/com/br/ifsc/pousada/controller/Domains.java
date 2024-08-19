@@ -25,5 +25,4 @@ public enum Domains {
         throw new IllegalArgumentException("Valor inesperado: " + value);
     }
 
-
 }
