@@ -24,8 +24,8 @@ public class QuartoController extends AbstractController {
             quarto.setTipoQuarto(TipoQuarto.fromValue(readInt()));
             System.out.println("Valor da diária");
             quarto.setValorDiaria(readFloat());
-            var updatedQuarto = super.executeWithExceptionHandler(() -> quartoService.update(quarto));
-            System.out.println(updatedQuarto.toString());
+            super.executeWithExceptionHandler(() -> quartoService.update(quarto))
+                    .ifPresent(System.out::println);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -37,7 +37,7 @@ public class QuartoController extends AbstractController {
         System.out.println("============ DELETAR QUARTO ============");
         System.out.println("Informe o número: ");
         var numero = readString();
-        super.executeWithExceptionHandler(() -> quartoService.delete(numero));
+        super.executeWithExceptionHandler(() -> quartoService.delete(numero)).ifPresent(o -> System.out.println("Quarto deletado!"));
         System.out.println("========================================");
     }
 }

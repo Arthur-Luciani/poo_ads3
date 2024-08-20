@@ -28,8 +28,8 @@ public class QuartoEntity {
     public String toString() {
         return "\"============ DADOS QUARTO ============\n" + //
                 "ID: " + id.toString() + "\n" + //
-                "Nome: " + numero + "\n" + //
-                "CPF: " + tipoQuarto.toString() + "\n" + //
+                "Numero: " + numero + "\n" + //
+                "Categoria: " + tipoQuarto.toString() + "\n" + //
                 "Valor diária: R$" + valorDiaria + "\n" + //
                 "========================================";
     }

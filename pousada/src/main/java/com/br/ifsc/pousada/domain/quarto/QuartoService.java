@@ -29,12 +29,13 @@ public class QuartoService {
     }
 
     @Transactional
-    public void delete(String numero) {
+    public boolean delete(String numero) {
         var quarto = repository.findByNumero(numero).orElseThrow(() -> new IllegalArgumentException("Quarto não encontrado"));
         try {
             repository.delete(quarto);
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("Não foi possível deletar o quarto " + quarto.getNumero());
         }
+        return true;
     }
 }

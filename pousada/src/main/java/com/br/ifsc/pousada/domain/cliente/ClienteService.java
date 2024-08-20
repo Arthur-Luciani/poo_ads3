@@ -20,13 +20,14 @@ public class ClienteService {
         return repository.save(updatedCliente);
     }
 
-    public void delete(String cpf) {
+    public boolean delete(String cpf) {
         var cliente = repository.findByCpf(cpf).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
         try {
             repository.delete(cliente);
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("Não foi possível deletar o cliente " + cliente.getNome());
         }
+        return true;
     }
 
     public ClienteEntity findByCpf(String cpf) {

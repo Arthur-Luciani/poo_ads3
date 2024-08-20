@@ -3,11 +3,11 @@ package com.br.ifsc.pousada.domain.reserva;
 import com.br.ifsc.pousada.domain.cliente.ClienteEntity;
 import com.br.ifsc.pousada.domain.quarto.QuartoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.UUID;
 
 @Service
 public class ReservaService {
@@ -28,12 +28,17 @@ public class ReservaService {
         return repository.save(reserva);
     }
 
-    public void cancelarReserva(UUID id){
+    public boolean cancelarReserva(Long id) {
         var reserva = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Não foi possível localizar a reserva"));
         if (reserva.getDataEntrada().isAfter(LocalDate.now().minusDays(3))) {
             throw new IllegalArgumentException("Não é possível cancelar a reserva. O cancelamento deve ocorrer com no mínimo três dias de antecedência");
         }
-        repository.delete(reserva);
+        try {
+            repository.delete(reserva);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("Não foi possível cancelar a reserva " + reserva.getId());
+        }
+        return true;
     }
 
 }

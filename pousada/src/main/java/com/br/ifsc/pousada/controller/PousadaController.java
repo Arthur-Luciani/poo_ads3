@@ -24,8 +24,8 @@ public class PousadaController extends AbstractController {
         var pousada = new PousadaEntity();
         System.out.println("Nome: ");
         pousada.setNome(scanner.nextLine());
-        var savedPousada = super.executeWithExceptionHandler(() -> pousadaService.create(pousada));
-        System.out.println(savedPousada.toString());
+        super.executeWithExceptionHandler(() -> pousadaService.create(pousada))
+                .ifPresent(System.out::println);
         System.out.println("========================================");
     }
 
@@ -41,8 +41,8 @@ public class PousadaController extends AbstractController {
         quarto.setTipoQuarto(TipoQuarto.fromValue(readInt()));
         System.out.println("Valor da diária");
         quarto.setValorDiaria(readFloat());
-        var savedQuarto = super.executeWithExceptionHandler(() -> pousadaService.createQuarto(pousadaNome, quarto));
-        System.out.println(savedQuarto.toString());
+        super.executeWithExceptionHandler(() -> pousadaService.createQuarto(pousadaNome, quarto))
+                .ifPresent(System.out::println);
         System.out.println("========================================");
     }
 }

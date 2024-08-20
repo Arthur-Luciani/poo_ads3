@@ -7,9 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.text.DateFormat;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity(name = "reserva")
 @Getter
@@ -17,8 +15,8 @@ import java.util.UUID;
 public class ReservaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
     @ManyToOne
     @JoinColumn(name = "quarto_id")
     private QuartoEntity quarto;
@@ -36,8 +34,8 @@ public class ReservaEntity {
                 "Cliente: " + cliente.getCpf() + "\n" + //
                 "Quarto: " + quarto.getNumero() + "\n" + //
                 "Valor: R$" + valor + "\n" + //
-                "Data entrada: " + DateUtil.getDate(dataEntrada) + "\n" + //
-                "Data saída: " + DateUtil.getDate(dataSaida) + "\n" + //
+                "Data entrada: " + DateUtil.getStringFromDate(dataEntrada) + "\n" + //
+                "Data saída: " + DateUtil.getStringFromDate(dataSaida) + "\n" + //
                 "========================================";
     }
 }

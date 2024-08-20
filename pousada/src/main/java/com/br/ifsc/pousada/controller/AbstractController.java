@@ -2,6 +2,7 @@ package com.br.ifsc.pousada.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
@@ -18,12 +19,12 @@ public abstract class AbstractController {
         }
     }
 
-    public <T> T executeWithExceptionHandler(Supplier<T> supplier) {
+    public <T> Optional<T> executeWithExceptionHandler(Supplier<T> supplier) {
         try {
-            return supplier.get();
+            return Optional.of(supplier.get());
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
-            return null;
+            return Optional.empty();
         }
     }
 

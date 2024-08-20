@@ -5,8 +5,6 @@ import com.br.ifsc.pousada.domain.cliente.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Scanner;
-
 @Component
 public class ClienteController extends AbstractController {
 
@@ -20,8 +18,8 @@ public class ClienteController extends AbstractController {
         cliente.setNome(readString());
         System.out.println("CPF: ");
         cliente.setCpf(readString());
-        var savedCliente = super.executeWithExceptionHandler(() -> clienteService.create(cliente));
-        System.out.println(savedCliente.toString());
+        super.executeWithExceptionHandler(() -> clienteService.create(cliente))
+                .ifPresent(System.out::println);
         System.out.println("========================================");
     }
 
@@ -35,8 +33,8 @@ public class ClienteController extends AbstractController {
             cliente.setNome(readString());
             System.out.println("CPF: ");
             cliente.setCpf(readString());
-            var updatedCliente = super.executeWithExceptionHandler(() -> clienteService.update(cliente));
-            System.out.println(updatedCliente.toString());
+            super.executeWithExceptionHandler(() -> clienteService.update(cliente))
+                    .ifPresent(System.out::println);
         } catch (IllegalArgumentException exception) {
             System.out.println(exception.getMessage());
         } finally {
@@ -48,7 +46,7 @@ public class ClienteController extends AbstractController {
         System.out.println("=========== DELETAR CLIENTE ============");
         System.out.println("Informe o CPF: ");
         var cpf = readString();
-        super.executeWithExceptionHandler(() -> clienteService.delete(cpf));
+        super.executeWithExceptionHandler(() -> clienteService.delete(cpf)).ifPresent(o -> System.out.println("Cliente deletado!"));
         System.out.println("========================================");
     }
 
