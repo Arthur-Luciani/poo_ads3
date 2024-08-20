@@ -40,4 +40,9 @@ public class QuartoController extends AbstractController {
         super.executeWithExceptionHandler(() -> quartoService.delete(numero)).ifPresent(o -> System.out.println("Quarto deletado!"));
         System.out.println("========================================");
     }
+
+    public void listQuarto() {
+        System.out.println("============ LISTAR QUARTOS ============");
+        quartoService.findAll().forEach(System.out::println);
+    }
 }

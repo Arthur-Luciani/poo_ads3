@@ -11,15 +11,11 @@ import java.time.LocalDate;
 @Repository
 interface ReservaRepository extends JpaRepository<ReservaEntity, Long> {
 
-    /*@Query("SELECT r.quarto " +
-            "FROM reserva r " +
-            "WHERE r.quarto = quarto ")
-    boolean isQuartoEmpty(@Param("dtIni") LocalDate dataInicio, @Param("dtFim") LocalDate dataFim, @Param("quarto") QuartoEntity quarto);*/
-
     @Query("SELECT CASE WHEN COUNT(r) > 0 THEN FALSE ELSE TRUE END " +
             "FROM reserva r " +
             "WHERE r.quarto = :quarto " +
-            "AND r.dataEntrada <= :dtFim AND r.dataSaida >= :dtIni")
+            "AND (:dtIni BETWEEN r.dataEntrada AND r.dataSaida " +
+            "OR :dtFim BETWEEN r.dataEntrada AND r.dataSaida) ")
     Boolean isQuartoEmpty(@Param("dtIni") LocalDate dataInicio, @Param("dtFim") LocalDate dataFim, @Param("quarto") QuartoEntity quarto);
 
 }

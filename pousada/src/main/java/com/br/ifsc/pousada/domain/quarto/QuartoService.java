@@ -1,9 +1,12 @@
 package com.br.ifsc.pousada.domain.quarto;
 
-import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class QuartoService {
@@ -33,9 +36,15 @@ public class QuartoService {
         var quarto = repository.findByNumero(numero).orElseThrow(() -> new IllegalArgumentException("Quarto não encontrado"));
         try {
             repository.delete(quarto);
+            repository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("Não foi possível deletar o quarto " + quarto.getNumero());
         }
         return true;
+    }
+
+    @Transactional(readOnly = true)
+    public List<QuartoEntity> findAll() {
+        return repository.findAll();
     }
 }

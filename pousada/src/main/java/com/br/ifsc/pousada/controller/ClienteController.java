@@ -50,4 +50,9 @@ public class ClienteController extends AbstractController {
         System.out.println("========================================");
     }
 
+    public void listCliente() {
+        System.out.println("=========== LISTAR CLIENTES ============");
+        clienteService.findAll().forEach(System.out::println);
+    }
+
 }

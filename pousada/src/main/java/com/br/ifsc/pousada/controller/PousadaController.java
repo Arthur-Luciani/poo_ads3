@@ -45,4 +45,9 @@ public class PousadaController extends AbstractController {
                 .ifPresent(System.out::println);
         System.out.println("========================================");
     }
+
+    public void listPousada() {
+        System.out.println("=========== LISTAR POUSADAS ============");
+        pousadaService.findAll().forEach(System.out::println);
+    }
 }

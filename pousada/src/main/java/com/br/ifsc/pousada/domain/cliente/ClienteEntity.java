@@ -20,7 +20,7 @@ public class ClienteEntity {
 
     @Override
     public String toString() {
-        return "\"============ DADOS CLIENTE =============\n" + //
+        return "============ DADOS CLIENTE =============\n" + //
                 "ID: " + id.toString() + "\n" + //
                 "Nome: " + nome + "\n" + //
                 "CPF: " + cpf + "\n" + //

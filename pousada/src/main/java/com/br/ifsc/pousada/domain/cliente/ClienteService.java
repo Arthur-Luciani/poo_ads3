@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ClienteService {
 
@@ -24,6 +26,7 @@ public class ClienteService {
         var cliente = repository.findByCpf(cpf).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
         try {
             repository.delete(cliente);
+            repository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("Não foi possível deletar o cliente " + cliente.getNome());
         }
@@ -32,5 +35,9 @@ public class ClienteService {
 
     public ClienteEntity findByCpf(String cpf) {
         return repository.findByCpf(cpf).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+    }
+
+    public List<ClienteEntity> findAll() {
+        return repository.findAll();
     }
 }

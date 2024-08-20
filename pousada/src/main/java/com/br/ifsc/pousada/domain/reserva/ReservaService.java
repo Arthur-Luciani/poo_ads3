@@ -5,9 +5,11 @@ import com.br.ifsc.pousada.domain.quarto.QuartoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 public class ReservaService {
@@ -15,6 +17,7 @@ public class ReservaService {
     @Autowired
     private ReservaRepository repository;
 
+    @Transactional
     public ReservaEntity reservarQuarto(ClienteEntity cliente, QuartoEntity quarto, LocalDate dtInicio, LocalDate dtFim) {
         if (!repository.isQuartoEmpty(dtInicio, dtFim, quarto)) {
             throw new IllegalArgumentException("Quarto não está disponível para reservas");
@@ -28,6 +31,7 @@ public class ReservaService {
         return repository.save(reserva);
     }
 
+    @Transactional
     public boolean cancelarReserva(Long id) {
         var reserva = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Não foi possível localizar a reserva"));
         if (reserva.getDataEntrada().isAfter(LocalDate.now().minusDays(3))) {
@@ -35,10 +39,15 @@ public class ReservaService {
         }
         try {
             repository.delete(reserva);
+            repository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("Não foi possível cancelar a reserva " + reserva.getId());
         }
         return true;
     }
 
+    @Transactional(readOnly = true)
+    public List<ReservaEntity> findAll() {
+        return repository.findAll();
+    }
 }

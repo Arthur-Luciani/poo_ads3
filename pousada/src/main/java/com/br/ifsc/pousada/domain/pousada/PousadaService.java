@@ -2,11 +2,12 @@ package com.br.ifsc.pousada.domain.pousada;
 
 import com.br.ifsc.pousada.domain.quarto.QuartoEntity;
 import com.br.ifsc.pousada.domain.quarto.QuartoService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,7 +21,13 @@ public class PousadaService {
 
     @Transactional
     public PousadaEntity create(PousadaEntity pousada) {
-        return repository.save(pousada);
+        PousadaEntity result;
+        try {
+            result = repository.saveAndFlush(pousada);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("Nome já utilizado");
+        }
+        return result;
     }
 
     @Transactional
@@ -41,12 +48,19 @@ public class PousadaService {
     }
 
     @Transactional
-    public void delete(UUID uuid) {
+    public boolean delete(UUID uuid) {
         var pousada = repository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
         try {
             repository.delete(pousada);
+            repository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("Não foi possível deletar a pousada " + pousada.getNome());
         }
+        return true;
+    }
+
+    @Transactional(readOnly = true)
+    public List<PousadaEntity> findAll() {
+        return repository.findAll();
     }
 }
